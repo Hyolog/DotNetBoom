@@ -10,6 +10,17 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+<form>
+    <p>
+        회사명 : <input type="text" asp-for="SearchString" />
+        <select asp-for="CompanyBusinessGroup" asp-items="Model.BusinessGroups">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
