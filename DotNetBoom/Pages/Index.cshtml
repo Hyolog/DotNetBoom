@@ -11,7 +11,7 @@
         font-size: 12px;
     }
 
-    #search-text {
+    #search-name {
         border: none;
         padding: 6px;
         font-size: 16px;
@@ -44,22 +44,28 @@
         font-size: 12px;
         color: rgb(51, 51, 51);
     }
+
+    .company-businessGroup {
+        font-size: 12px;
+        color: rgb(51, 51, 51);
+    }
 </style>
 
 <section>
     <div style="width: 20%; height: 100%; float: left;">
         <div id="search-box">
-            <input id="search-text" onkeyup="filter()" type="text" placeholder="회사명 입력" />
+            <input id="search-name" onkeyup="filter()" type="text" placeholder="회사명 입력" />
+            <select id="search-businessGroup" onmouseup="filter()">
+                <option>산업군</option>
+            </select>
         </div>
-        <div id="company-list" style="list-style: none">
-        </div>
+        <div id="company-list" style="list-style: none"></div>
     </div>
 
-    <div>
-        <div id="map" style="width: 80%; height: 100%; float: right; position: relative; overflow: hidden;"></div>
-    </div>
+    <div id="map" style="width: 80%; height: 100%; float: right; position: relative; overflow: hidden;"></div>
 </section>
 
+@*Set map using kakao map API*@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=415ac1c77f0dfd57f3ddfbf328cd2e55&libraries=services,clusterer,drawing"></script>
 <script>
     console.log("[Set Map]");
@@ -70,25 +76,21 @@
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
-
-    var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-
-    var marker = new kakao.maps.Marker({
-        position: markerPosition
-    });
-
-    marker.setMap(map);
 </script>
 
+
+@*Init data using json file*@
 <script src="./data/companies.json" type="text/javascript"></script>
 <script>
     var json = JSON.parse(companies);
 
     const companyList = document.getElementById('company-list');
+    const tempBusinessGroupList = new Array();
 
     for (i = 0; i < json.length; i++) {
         var companyInfoSection = document.createElement("section");
         companyInfoSection.className = 'company-info';
+        companyInfoSection.tabIndex = "0";
 
         var companyNameDiv = document.createElement("div");
         companyNameDiv.className = 'company-name';
@@ -100,19 +102,45 @@
         companyLocationDiv.innerHTML = json[i].location;
         companyInfoSection.appendChild(companyLocationDiv);
 
+        var companybusinesGroupDiv = document.createElement("div");
+        companybusinesGroupDiv.className = 'company-businessGroup';
+        companybusinesGroupDiv.innerHTML = json[i].businessGroup;
+        companyInfoSection.appendChild(companybusinesGroupDiv);
+
         companyList.appendChild(companyInfoSection);
+
+        tempBusinessGroupList.push(json[i].businessGroup);
+    }
+
+    // businessGroupList 세팅
+    var businessGroupList = document.getElementById('search-businessGroup');
+    const set = new Set(tempBusinessGroupList.sort());
+
+    for (let item of set) {
+        var option = document.createElement('option');
+        option.value = item;
+        option.text = item;
+
+        businessGroupList.add(option, null);
     }
 </script>
 
 <script type="text/javascript">
+    // 조건 변경시 회사 리스트 필터링 해주는 함수
     function filter() {
-        var searchText = document.getElementById('search-text').value.toUpperCase();
+        // 회사 리스트 가져와서
         var companyList = document.getElementsByClassName('company-info');
+        // 검색어 가져오고
+        var searchName = document.getElementById('search-name').value.toUpperCase();
+        // 선택되어있는 businessGroup 가져오고
+        var selectedBusinessGroup = document.getElementById('search-businessGroup').value;
 
+        // 검색어 - 회사이름 필터링
         for (var i = 0; i < companyList.length; i++) {
             var name = companyList[i].getElementsByClassName('company-name');
-
-            if (name[0].innerHTML.toUpperCase().indexOf(searchText) > -1) {
+            var businessGroup = companyList[i].getElementsByClassName('company-businessGroup');
+            // 이름에 일부 포함이면
+            if (name[0].innerHTML.toUpperCase().indexOf(searchName) > -1 && businessGroup[0].innerHTML === selectedBusinessGroup) {
                 companyList[i].style.display = "block";
             } else {
                 companyList[i].style.display = "none";
