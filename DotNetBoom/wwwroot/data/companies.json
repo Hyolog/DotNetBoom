@@ -1,0 +1,86 @@
+companies = `[
+  {
+    "name": "엑스엘게임즈",
+    "location": "경기도 성남시 분당구 대왕판교로645번길 14 네오위즈판교타워 7층",
+    "businessGroup": "게임",
+    "type": "대기업 계열사",
+    "numberOfEmployees": 400
+  },
+  {
+    "name": "이베이코리아",
+    "location": "서울특별시 강남구 테헤란로 152 강남파이낸스센터 34층",
+    "businessGroup": "이커머스",
+    "type": "중견기업",
+    "numberOfEmployees": 900
+  },
+  {
+    "name": "카카오",
+    "location": "제주특별자치도 제주시 첨단로 242",
+    "businessGroup": "포털",
+    "type": "대기업 계열사",
+    "numberOfEmployees": 3000
+  },
+  {
+    "name": "네이버",
+    "location": "경기도 성남시 분당구 불정로 6",
+    "businessGroup": "포털",
+    "type": "대기업 계열사",
+    "numberOfEmployees": 4100
+  },
+  {
+    "name": "삼성전자",
+    "location": "경기도 수원시 영통구 삼성로 129 삼성전자공업단지",
+    "businessGroup": "휴대폰 제조업",
+    "type": "대기업",
+    "numberOfEmployees": 111000
+  },
+  {
+    "name": "현대자동차",
+    "location": "서울특별시 서초구 헌릉로 12",
+    "businessGroup": "승용차 제조업",
+    "type": "대기업",
+    "numberOfEmployees": 70000
+  },
+  {
+    "name": "대한항공",
+    "location": "서울특별시 강서구 하늘길 260 대한항공",
+    "businessGroup": "항공 여객 운송업",
+    "type": "대기업 계열사",
+    "numberOfEmployees": 18000
+  },
+  {
+    "name": "Name_1",
+    "location": "서울특별시 서초구 헌릉로 1",
+    "businessGroup": "제조업",
+    "type": "대기업",
+    "numberOfEmployees": 1
+  },
+  {
+    "name": "Name_2",
+    "location": "서울특별시 서초구 헌릉로 2",
+    "businessGroup": "제조업",
+    "type": "대기업",
+    "numberOfEmployees": 2
+  },
+  {
+    "name": "Name_3",
+    "location": "서울특별시 서초구 헌릉로 3",
+    "businessGroup": "제조업",
+    "type": "대기업",
+    "numberOfEmployees": 3
+  },
+  {
+    "name": "Name_4",
+    "location": "서울특별시 서초구 헌릉로 4",
+    "businessGroup": "제조업",
+    "type": "대기업",
+    "numberOfEmployees": 4
+  },
+  {
+    "name": "Name_5",
+    "location": "서울특별시 서초구 헌릉로 5",
+    "businessGroup": "제조업",
+    "type": "대기업",
+    "numberOfEmployees": 5
+  }
+]`;
