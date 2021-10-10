@@ -4,15 +4,54 @@
     ViewData["Title"] = "Home page";
 }
 
+<style>
+    #search-box {
+        padding: 10px;
+        margin: 0px;
+        font-size: 12px;
+    }
+
+    #search-text {
+        border: none;
+        padding: 6px;
+        font-size: 16px;
+        width: 80%;
+        border-radius: 6px;
+        background-color: lightgray;
+    }
+
+    #company-list {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+        font-family: "Noto Sans KR", sans-serif;
+        display: block; /*개행*/
+    }
+
+    .company-info {
+        border-bottom: 1px solid rgb(245, 245, 245);
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .company-name {
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+    }
+
+    .company-location {
+        font-size: 12px;
+        color: rgb(51, 51, 51);
+    }
+</style>
+
 <section>
     <div style="width: 20%; height: 100%; float: left;">
-        <div>
-            <div>
-                <input type="text" placeholder="회사명 입력" />
-            </div>
+        <div id="search-box">
+            <input id="search-text" onkeyup="filter()" type="text" placeholder="회사명 입력" />
         </div>
-        <div id="companies" style="list-style: none">
-
+        <div id="company-list" style="list-style: none">
         </div>
     </div>
 
@@ -26,8 +65,8 @@
     console.log("[Set Map]");
     var mapContainer = document.getElementById('map'),
         mapOption = {
-            center: new kakao.maps.LatLng(36, 127),
-            level: 12 // 지도의 확대 레벨
+            center: new kakao.maps.LatLng(37.5003, 127.084),
+            level: 8 // 지도의 확대 레벨
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
@@ -45,15 +84,39 @@
 <script>
     var json = JSON.parse(companies);
 
-    const companiesElement = document.getElementById('companies');
+    const companyList = document.getElementById('company-list');
 
     for (i = 0; i < json.length; i++) {
-        var nameDiv = document.createElement("div");
-        nameDiv.innerHTML = json[i].name;
-        companiesElement.appendChild(nameDiv);
+        var companyInfoSection = document.createElement("section");
+        companyInfoSection.className = 'company-info';
 
-        var typeDiv = document.createElement("div");
-        typeDiv.innerHTML = json[i].type;
-        companiesElement.appendChild(typeDiv);
+        var companyNameDiv = document.createElement("div");
+        companyNameDiv.className = 'company-name';
+        companyNameDiv.innerHTML = json[i].name;
+        companyInfoSection.appendChild(companyNameDiv);
+
+        var companyLocationDiv = document.createElement("div");
+        companyLocationDiv.className = 'company-location';
+        companyLocationDiv.innerHTML = json[i].location;
+        companyInfoSection.appendChild(companyLocationDiv);
+
+        companyList.appendChild(companyInfoSection);
+    }
+</script>
+
+<script type="text/javascript">
+    function filter() {
+        var searchText = document.getElementById('search-text').value.toUpperCase();
+        var companyList = document.getElementsByClassName('company-info');
+
+        for (var i = 0; i < companyList.length; i++) {
+            var name = companyList[i].getElementsByClassName('company-name');
+
+            if (name[0].innerHTML.toUpperCase().indexOf(searchText) > -1) {
+                companyList[i].style.display = "block";
+            } else {
+                companyList[i].style.display = "none";
+            }
+        }
     }
 </script>
