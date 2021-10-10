@@ -54,9 +54,9 @@
 <section>
     <div style="width: 20%; height: 100%; float: left;">
         <div id="search-box">
-            <input id="search-name" onkeyup="filter()" type="text" placeholder="회사명 입력" />
-            <select id="search-businessGroup" onmouseup="filter()">
-                <option>산업군</option>
+            <input id="search-name" onkeyup="filterCompanies()" type="text" placeholder="회사명 입력" />
+            <select id="search-businessGroup" onmouseup="filterCompanies()" plac>
+                <option value="">산업군 선택</option>
             </select>
         </div>
         <div id="company-list" style="list-style: none"></div>
@@ -125,23 +125,23 @@
     }
 </script>
 
+@*조건 변경시 회사 리스트 필터링 해주는 함수*@
 <script type="text/javascript">
-    // 조건 변경시 회사 리스트 필터링 해주는 함수
-    function filter() {
-        // 회사 리스트 가져와서
+    function filterCompanies() {
         var companyList = document.getElementsByClassName('company-info');
-        // 검색어 가져오고
         var searchName = document.getElementById('search-name').value.toUpperCase();
-        // 선택되어있는 businessGroup 가져오고
         var selectedBusinessGroup = document.getElementById('search-businessGroup').value;
 
-        // 검색어 - 회사이름 필터링
         for (var i = 0; i < companyList.length; i++) {
             var name = companyList[i].getElementsByClassName('company-name');
             var businessGroup = companyList[i].getElementsByClassName('company-businessGroup');
             // 이름에 일부 포함이면
-            if (name[0].innerHTML.toUpperCase().indexOf(searchName) > -1 && businessGroup[0].innerHTML === selectedBusinessGroup) {
-                companyList[i].style.display = "block";
+            if (name[0].innerHTML.toUpperCase().indexOf(searchName) > -1) {
+                if (selectedBusinessGroup && businessGroup[0].innerHTML !== selectedBusinessGroup) {
+                    companyList[i].style.display = "none";
+                } else {
+                    companyList[i].style.display = "block";
+                }
             } else {
                 companyList[i].style.display = "none";
             }
