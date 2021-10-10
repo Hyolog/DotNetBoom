@@ -99,6 +99,7 @@
         var companyInfoSection = document.createElement("section");
         companyInfoSection.className = 'company-info';
         companyInfoSection.tabIndex = "0";
+        companyInfoSection.addEventListener("mouseup", drawCompanyOnMap);
 
         var companyNameDiv = document.createElement("div");
         companyNameDiv.className = 'company-name';
@@ -130,6 +131,33 @@
         option.text = item;
 
         businessGroupList.add(option, null);
+    }
+
+    // 선택한 회사의 주소를 좌표로 변환 후 지도에 그려주는 함수
+    function drawCompanyOnMap() {
+        var location = this.querySelector('.company-location').textContent;
+        var name = this.querySelector('.company-name').textContent;
+
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(location, function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+ 
+                var marker = new kakao.maps.Marker({
+                    map: this.map,
+                    position: coords
+                });
+
+                var infowindow = new kakao.maps.InfoWindow({
+                    content: `<div style="width:150px;text-align:center;padding:6px 0;">${name}</div>`
+                });
+
+                infowindow.open(map, marker);
+
+                map.setCenter(coords);
+            }
+        });
     }
 </script>
 
