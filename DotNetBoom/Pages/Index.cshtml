@@ -65,29 +65,28 @@
     <div id="map" style="width: 80%; height: 100%; float: right; position: relative; overflow: hidden;"></div>
 </section>
 
-@*Set map using kakao map API*@
+@*카카오 Map API를 이용한 map 기본 설정*@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=415ac1c77f0dfd57f3ddfbf328cd2e55&libraries=services,clusterer,drawing"></script>
 <script>
-    console.log("[Set Map]");
     var mapContainer = document.getElementById('map'),
-        mapOption = {
+        mapOption = { // 서울~분당 보이는 적절한 시작 위치
             center: new kakao.maps.LatLng(37.5003, 127.084),
-            level: 8 // 지도의 확대 레벨
+            level: 8
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
     var mapTypeControl = new kakao.maps.MapTypeControl();
     map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
-    // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
     var zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+    // TODO : 데이터 가져와서 마커 찍기
 </script>
 
 
-@*Init data using json file*@
+@*Json 데이터 읽어와 기본 회사 데이터 세팅*@
 <script src="./data/companies.json" type="text/javascript"></script>
 <script>
     var json = JSON.parse(companies);
@@ -121,7 +120,6 @@
         tempBusinessGroupList.push(json[i].businessGroup);
     }
 
-    // businessGroupList 세팅
     var businessGroupList = document.getElementById('search-businessGroup');
     const set = new Set(tempBusinessGroupList.sort());
 
@@ -143,12 +141,15 @@
         geocoder.addressSearch(location, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
- 
+
+                this.map.setLevel(4);
+
                 var marker = new kakao.maps.Marker({
                     map: this.map,
                     position: coords
                 });
 
+                // TODO : 하이퍼링크로 변경
                 var infowindow = new kakao.maps.InfoWindow({
                     content: `<div style="width:150px;text-align:center;padding:6px 0;">${name}</div>`
                 });
@@ -161,7 +162,7 @@
     }
 </script>
 
-@*조건 변경시 회사 리스트 필터링 해주는 함수*@
+@*검색 조건에 따라 회사 목록 필터링*@
 <script type="text/javascript">
     function filterCompanies() {
         var companyList = document.getElementsByClassName('company-info');
@@ -171,7 +172,7 @@
         for (var i = 0; i < companyList.length; i++) {
             var name = companyList[i].getElementsByClassName('company-name');
             var businessGroup = companyList[i].getElementsByClassName('company-businessGroup');
-            // 이름에 일부 포함이면
+            
             if (name[0].innerHTML.toUpperCase().indexOf(searchName) > -1) {
                 if (selectedBusinessGroup && businessGroup[0].innerHTML !== selectedBusinessGroup) {
                     companyList[i].style.display = "none";
