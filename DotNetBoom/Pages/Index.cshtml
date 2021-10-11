@@ -49,6 +49,24 @@
         font-size: 12px;
         color: rgb(51, 51, 51);
     }
+
+    .marker-overlay {
+        position: relative;
+        bottom: 85px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        background: #9996c9;
+    }
+
+    .marker-overlay a {
+        display: block;
+        text-decoration: none;
+        text-align: center;
+        color: white;
+        border-radius: 4px;
+        font-size: 14px;
+        padding: 5px 10px 5px 10px;
+    }
 </style>
 
 <section>
@@ -142,19 +160,28 @@
             if (status === kakao.maps.services.Status.OK) {
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-                this.map.setLevel(4);
+                var imageSrc = './assets/marker.png',
+                    imageSize = new kakao.maps.Size(49, 53),
+                    imageOption = { offset: new kakao.maps.Point(25, 80) };
+
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
                 var marker = new kakao.maps.Marker({
                     map: this.map,
-                    position: coords
+                    position: coords,
+                    image: markerImage
                 });
 
-                // TODO : 하이퍼링크로 변경
-                var infowindow = new kakao.maps.InfoWindow({
-                    content: `<div style="width:150px;text-align:center;padding:6px 0;">${name}</div>`
+                var content = `<div class="marker-overlay"><a href="https://github.com/Hyolog" target="_blank">${name}</a></div>`;
+
+                var customOverlay = new kakao.maps.CustomOverlay({
+                    map: this.map,
+                    position: coords,
+                    content: content,
+                    yAnchor: 1
                 });
 
-                infowindow.open(map, marker);
+                this.map.setLevel(4);
 
                 map.setCenter(coords);
             }
@@ -172,7 +199,7 @@
         for (var i = 0; i < companyList.length; i++) {
             var name = companyList[i].getElementsByClassName('company-name');
             var businessGroup = companyList[i].getElementsByClassName('company-businessGroup');
-            
+
             if (name[0].innerHTML.toUpperCase().indexOf(searchName) > -1) {
                 if (selectedBusinessGroup && businessGroup[0].innerHTML !== selectedBusinessGroup) {
                     companyList[i].style.display = "none";
