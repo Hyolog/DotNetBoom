@@ -9,4 +9,4 @@
 * html, css, javascript
 
 ## How to use
-Just Click [DotNetBoom](https://www.dotnetboom.com)
+Just Click [DotNetBoom](https://dotnetboom.site)
