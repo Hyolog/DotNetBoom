@@ -3,43 +3,39 @@
 
 <head>
     <style>
-        #search-box {
-            width: 95%;
-            z-index: 9;
-            font-size: 12px;
+        html,
+        body {
+            padding: 0;
+            padding: 0;
+        }
+
+        #companies-search {
+            width: 20%;
+            height: 100vh;
+            float: left;
         }
 
         #search-name {
-            width: 100%;
             margin: 5px;
-            padding: 8px;
+            padding: 5px;
             font-size: 14px;
-            border-radius: 6px;
-            background-color: lightgray;
         }
 
-        #search-businessGroup {
-            width: 60%;
+        #search-business-group {
             margin: 5px;
-            padding: 4px;
-            font-size: 13px;
-            border-radius: 6px;
+            padding: 5px;
         }
 
         #company-list {
-            width: 95%;
-            box-sizing: border-box;
             border: medium;
             font-family: "Noto Sans KR", sans-serif;
-            display: block;
-            list-style: none;
         }
 
         .company-info {
-            width: 100%;
-            cursor: pointer;
             padding: 8px;
             border-bottom: 1px solid rgb(245, 245, 245);
+            font-size: 12px;
+            cursor: pointer;
         }
 
         .company-name {
@@ -57,64 +53,47 @@
             font-size: 12px;
             margin: 2px 0px 2px 0px;
         }
-
-        /* #map {
+        
+        #map {
             width: 80%;
-            height: 100%;
-            padding: 0px;
-            margin: 0px;
-        } */
-
-        .marker-overlay {
-            position: relative;
-            bottom: 85px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            background: #9996c9;
-        }
-
-        .marker-overlay a {
-            display: block;
-            text-decoration: none;
-            text-align: center;
-            color: white;
-            border-radius: 4px;
-            font-size: 14px;
-            padding: 5px 10px 5px 10px;
+            height: 100vh;
+            float: right;
         }
     </style>
-
 </head>
 
 <body>
-    <section style="width: 100%; height: 100%; display: flex;">
-        <div style="width:20%; overflow-x: hidden; overflow-y:auto;">
-            <div id="search-box">
-                <input id="search-name" onkeyup="filterCompanies()" type="text" placeholder="회사명 입력" />
-                <select id="search-businessGroup" onmouseup="filterCompanies()">
-                    <option value="">산업군 선택</option>
-                </select>
-            </div>
-            <div id="company-list"></div>
-        </div>
+    <div id="companies-search">
+        <input id="search-name" onkeyup="filterCompanies()" />
 
-        <div id="map" style="width:80%;"></div>
-    </section>
+        <select id="search-business-group" onmouseup="filterCompanies()">
+            <option value="">산업군 선택</option>
+        </select>
+
+        <div id="company-list"></div>
+    </div>
+
+    <div id="map"></div>
 
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=415ac1c77f0dfd57f3ddfbf328cd2e55&libraries=services,clusterer,drawing"></script>
     <script>
-        var mapContainer = document.getElementById('map'),
-            mapOption = { // 서울~분당 보이는 적절한 시작 위치
-                center: new kakao.maps.LatLng(37.5003, 127.084),
-                level: 8
-            };
+        // map 이라는 이름을 가진 element 가져오기
+        var mapContainer = document.getElementById('map')
+        // 서울~분당 보이는 적절한 시작 위치 설정
+        var mapOption = {
+            center: new kakao.maps.LatLng(37.5003, 127.084),
+            level: 8
+        };
 
+        // kakao map api를 이용해 map 생성
         var map = new kakao.maps.Map(mapContainer, mapOption);
 
+        // 지도 타입 컨트롤 생성/추가 [일반/스카이뷰]
         var mapTypeControl = new kakao.maps.MapTypeControl();
         map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
+        // 확대 축소 컨트롤 생성/추가
         var zoomControl = new kakao.maps.ZoomControl();
         map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
@@ -128,6 +107,7 @@
         const companyList = document.getElementById('company-list');
         const tempBusinessGroupList = new Array();
 
+        // 회사 정보를 담을 section 컨트롤 생성 및 하위 div 컨트롤 생성/추가
         for (i = 0; i < json.length; i++) {
             var companyInfoSection = document.createElement("section");
             companyInfoSection.className = 'company-info';
@@ -145,7 +125,7 @@
             companyInfoSection.appendChild(companyLocationDiv);
 
             var companybusinesGroupDiv = document.createElement("div");
-            companybusinesGroupDiv.className = 'company-businessGroup';
+            companybusinesGroupDiv.className = 'company-business-group';
             companybusinesGroupDiv.innerHTML = json[i].businessGroup;
             companyInfoSection.appendChild(companybusinesGroupDiv);
 
@@ -154,7 +134,8 @@
             tempBusinessGroupList.push(json[i].businessGroup);
         }
 
-        var businessGroupList = document.getElementById('search-businessGroup');
+        // 산업군 필터링 컨트롤 Init
+        var businessGroupList = document.getElementById('search-business-group');
         const set = new Set(tempBusinessGroupList.sort());
 
         for (let item of set) {
@@ -176,24 +157,14 @@
                 if (status === kakao.maps.services.Status.OK) {
                     var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-                    var imageSrc = './assets/marker.png',
-                        imageSize = new kakao.maps.Size(49, 53),
-                        imageOption = { offset: new kakao.maps.Point(25, 80) };
-
-                    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
                     var marker = new kakao.maps.Marker({
                         map: this.map,
                         position: coords,
-                        image: markerImage
                     });
-
-                    var content = `<div class="marker-overlay"><a href="https://github.com/Hyolog" target="_blank">${name}</a></div>`;
 
                     var customOverlay = new kakao.maps.CustomOverlay({
                         map: this.map,
                         position: coords,
-                        content: content,
                         yAnchor: 1
                     });
 
@@ -206,20 +177,21 @@
     </script>
 
     <script type="text/javascript">
+        // 검색 조건 변경시 회사를 필터링
         function filterCompanies() {
             var companyList = document.getElementsByClassName('company-info');
             var searchName = document.getElementById('search-name').value.toUpperCase();
-            var selectedBusinessGroup = document.getElementById('search-businessGroup').value;
+            var selectedBusinessGroup = document.getElementById('search-business-group').value;
 
             for (var i = 0; i < companyList.length; i++) {
                 var name = companyList[i].getElementsByClassName('company-name');
-                var businessGroup = companyList[i].getElementsByClassName('company-businessGroup');
+                var businessGroup = companyList[i].getElementsByClassName('company-business-group');
 
                 if (name[0].innerHTML.toUpperCase().indexOf(searchName) > -1) {
-                    if (selectedBusinessGroup && businessGroup[0].innerHTML !== selectedBusinessGroup) {
-                        companyList[i].style.display = "none";
-                    } else {
+                    if (businessGroup[0].innerHTML == selectedBusinessGroup) {
                         companyList[i].style.display = "block";
+                    } else {
+                        companyList[i].style.display = "none";
                     }
                 } else {
                     companyList[i].style.display = "none";
