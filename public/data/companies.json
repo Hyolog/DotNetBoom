@@ -1,4 +1,4 @@
-companies = ` [
+[
   {
     "name": "엑스엘게임즈",
     "location": "경기도 성남시 분당구 대왕판교로645번길 14 네오위즈판교타워 7층",
@@ -118,4 +118,4 @@ companies = ` [
     "type": "중소기업",
     "numberOfEmployees": 160
   }
-]`;
+]

@@ -75,6 +75,7 @@
 
     <div id="map"></div>
 
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=415ac1c77f0dfd57f3ddfbf328cd2e55&libraries=services,clusterer,drawing"></script>
     <script>
@@ -97,54 +98,82 @@
         var zoomControl = new kakao.maps.ZoomControl();
         map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-        // TODO : 데이터 가져와서 마커 찍기
+        var clusterer = new kakao.maps.MarkerClusterer({
+            map: map,
+            averageCenter: true,
+            minLevel: 5
+        });
+
+        var data = fetch("data/companies.json")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (companies) {
+                var geocoder = new kakao.maps.services.Geocoder();
+                var markers = $(companies).map(function (i, company) {
+                    geocoder.addressSearch(company.location, function (position, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            return new kakao.maps.Marker({
+                                position: new kakao.maps.LatLng(position[0].y, position[0].x)
+                            })
+                        }
+                    });
+                });
+
+                // TODO markers가 안남아있다. jquery 이해도 부족
+                clusterer.addMarkers(markers);
+            });
     </script>
 
-    <script src="./data/companies.json" type="text/javascript"></script>
+    <script type="text/javascript"></script>
     <script>
-        var json = JSON.parse(companies);
-
         const companyList = document.getElementById('company-list');
         const tempBusinessGroupList = new Array();
 
-        // 회사 정보를 담을 section 컨트롤 생성 및 하위 div 컨트롤 생성/추가
-        for (i = 0; i < json.length; i++) {
-            var companyInfoSection = document.createElement("section");
-            companyInfoSection.className = 'company-info';
-            companyInfoSection.tabIndex = "0";
-            companyInfoSection.addEventListener("mouseup", drawCompanyOnMap);
+        var companies = fetch("data/companies.json")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (companies) {
+                // 회사 정보를 담을 section 컨트롤 생성 및 하위 div 컨트롤 생성/추가
+                for (i = 0; i < companies.length; i++) {
+                    var companyInfoSection = document.createElement("section");
+                    companyInfoSection.className = 'company-info';
+                    companyInfoSection.tabIndex = "0";
+                    companyInfoSection.addEventListener("mouseup", drawCompanyOnMap);
 
-            var companyNameDiv = document.createElement("div");
-            companyNameDiv.className = 'company-name';
-            companyNameDiv.innerHTML = json[i].name;
-            companyInfoSection.appendChild(companyNameDiv);
+                    var companyNameDiv = document.createElement("div");
+                    companyNameDiv.className = 'company-name';
+                    companyNameDiv.innerHTML = companies[i].name;
+                    companyInfoSection.appendChild(companyNameDiv);
 
-            var companyLocationDiv = document.createElement("div");
-            companyLocationDiv.className = 'company-location';
-            companyLocationDiv.innerHTML = json[i].location;
-            companyInfoSection.appendChild(companyLocationDiv);
+                    var companyLocationDiv = document.createElement("div");
+                    companyLocationDiv.className = 'company-location';
+                    companyLocationDiv.innerHTML = companies[i].location;
+                    companyInfoSection.appendChild(companyLocationDiv);
 
-            var companybusinesGroupDiv = document.createElement("div");
-            companybusinesGroupDiv.className = 'company-business-group';
-            companybusinesGroupDiv.innerHTML = json[i].businessGroup;
-            companyInfoSection.appendChild(companybusinesGroupDiv);
+                    var companybusinesGroupDiv = document.createElement("div");
+                    companybusinesGroupDiv.className = 'company-business-group';
+                    companybusinesGroupDiv.innerHTML = companies[i].businessGroup;
+                    companyInfoSection.appendChild(companybusinesGroupDiv);
 
-            companyList.appendChild(companyInfoSection);
+                    companyList.appendChild(companyInfoSection);
 
-            tempBusinessGroupList.push(json[i].businessGroup);
-        }
+                    tempBusinessGroupList.push(companies[i].businessGroup);
+                }
 
-        // 산업군 필터링 컨트롤 Init
-        var businessGroupList = document.getElementById('search-business-group');
-        const set = new Set(tempBusinessGroupList.sort());
+                // 산업군 필터링 컨트롤 Init
+                var businessGroupList = document.getElementById('search-business-group');
+                const set = new Set(tempBusinessGroupList.sort());
 
-        for (let item of set) {
-            var option = document.createElement('option');
-            option.value = item;
-            option.text = item;
+                for (let item of set) {
+                    var option = document.createElement('option');
+                    option.value = item;
+                    option.text = item;
 
-            businessGroupList.add(option, null);
-        }
+                    businessGroupList.add(option, null);
+                }
+            });
 
         // 선택한 회사의 주소를 좌표로 변환 후 지도에 그려주는 함수
         function drawCompanyOnMap() {
@@ -153,9 +182,9 @@
 
             var geocoder = new kakao.maps.services.Geocoder();
 
-            geocoder.addressSearch(location, function (result, status) {
+            geocoder.addressSearch(location, function (position, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    var coords = new kakao.maps.LatLng(position[0].y, position[0].x);
 
                     var marker = new kakao.maps.Marker({
                         map: this.map,
