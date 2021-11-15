@@ -188,10 +188,10 @@
                 var businessGroup = companyList[i].getElementsByClassName('company-business-group');
 
                 if (name[0].innerHTML.toUpperCase().indexOf(searchName) > -1) {
-                    if (businessGroup[0].innerHTML == selectedBusinessGroup) {
-                        companyList[i].style.display = "block";
-                    } else {
+                    if (selectedBusinessGroup && businessGroup[0].innerHTML !== selectedBusinessGroup) {
                         companyList[i].style.display = "none";
+                    } else {
+                        companyList[i].style.display = "block";
                     }
                 } else {
                     companyList[i].style.display = "none";
