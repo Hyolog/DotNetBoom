@@ -105,7 +105,7 @@
             minLevel: 5
         });
 
-        var data = fetch("data/companies.json")
+        var data = fetch("companies.json")
             .then(function (response) {
                 return response.json();
             })
@@ -131,7 +131,7 @@
         const companyList = document.getElementById('company-list');
         const tempBusinessGroupList = new Array();
 
-        var companies = fetch("data/companies.json")
+        var companies = fetch("companies.json")
             .then(function (response) {
                 return response.json();
             })
