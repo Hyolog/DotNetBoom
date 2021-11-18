@@ -105,25 +105,38 @@
             minLevel: 5
         });
 
-        var data = fetch("companies.json")
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (companies) {
-                var geocoder = new kakao.maps.services.Geocoder();
-                var markers = $(companies).map(function (i, company) {
-                    geocoder.addressSearch(company.location, function (position, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            return new kakao.maps.Marker({
-                                position: new kakao.maps.LatLng(position[0].y, position[0].x)
-                            })
-                        }
-                    });
-                });
+        var coords = {};
 
-                // TODO markers가 안남아있다. jquery 이해도 부족
-                clusterer.addMarkers(markers);
+        $.getJSON("companies.json", function (data) {
+            var geocoder = new kakao.maps.services.Geocoder();
+            var companies = data.companies;
+            var total = companies.length;
+            var counter = 0;
+
+            companies.forEach(function (company) {
+                // 비동기 addressSearch 함수 내부에서 계산한 값 기록을 위해 아래와 같은 패턴 사용
+                // ref : https://devtalk.kakao.com/t/topic/57418
+                geocoder.addressSearch(company.location, function(data, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        coords[company.location] = data[0];
+                    } 
+
+                    counter++;
+
+                    if (total === counter){
+                        var markers = [];
+
+                        companies.forEach(function (company) {
+                            markers.push(new kakao.maps.Marker({
+                                position: new kakao.maps.LatLng(coords[company.location].y, coords[company.location].x)
+                            }));
+                        });
+
+                        clusterer.addMarkers(markers);
+                    }
+                });
             });
+        });
     </script>
 
     <script type="text/javascript"></script>
@@ -131,50 +144,47 @@
         const companyList = document.getElementById('company-list');
         const tempBusinessGroupList = new Array();
 
-        var companies = fetch("companies.json")
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (companies) {
-                // 회사 정보를 담을 section 컨트롤 생성 및 하위 div 컨트롤 생성/추가
-                for (i = 0; i < companies.length; i++) {
-                    var companyInfoSection = document.createElement("section");
-                    companyInfoSection.className = 'company-info';
-                    companyInfoSection.tabIndex = "0";
-                    companyInfoSection.addEventListener("mouseup", drawCompanyOnMap);
+        $.getJSON("companies.json", function (json) {
+            var companies = json.companies;
 
-                    var companyNameDiv = document.createElement("div");
-                    companyNameDiv.className = 'company-name';
-                    companyNameDiv.innerHTML = companies[i].name;
-                    companyInfoSection.appendChild(companyNameDiv);
+            for (i = 0; i < companies.length; i++) {
+                var companyInfoSection = document.createElement("section");
+                companyInfoSection.className = 'company-info';
+                companyInfoSection.tabIndex = "0";
+                companyInfoSection.addEventListener("mouseup", drawCompanyOnMap);
 
-                    var companyLocationDiv = document.createElement("div");
-                    companyLocationDiv.className = 'company-location';
-                    companyLocationDiv.innerHTML = companies[i].location;
-                    companyInfoSection.appendChild(companyLocationDiv);
+                var companyNameDiv = document.createElement("div");
+                companyNameDiv.className = 'company-name';
+                companyNameDiv.innerHTML = companies[i].name;
+                companyInfoSection.appendChild(companyNameDiv);
 
-                    var companybusinesGroupDiv = document.createElement("div");
-                    companybusinesGroupDiv.className = 'company-business-group';
-                    companybusinesGroupDiv.innerHTML = companies[i].businessGroup;
-                    companyInfoSection.appendChild(companybusinesGroupDiv);
+                var companyLocationDiv = document.createElement("div");
+                companyLocationDiv.className = 'company-location';
+                companyLocationDiv.innerHTML = companies[i].location;
+                companyInfoSection.appendChild(companyLocationDiv);
 
-                    companyList.appendChild(companyInfoSection);
+                var companybusinesGroupDiv = document.createElement("div");
+                companybusinesGroupDiv.className = 'company-business-group';
+                companybusinesGroupDiv.innerHTML = companies[i].businessGroup;
+                companyInfoSection.appendChild(companybusinesGroupDiv);
 
-                    tempBusinessGroupList.push(companies[i].businessGroup);
-                }
+                companyList.appendChild(companyInfoSection);
 
-                // 산업군 필터링 컨트롤 Init
-                var businessGroupList = document.getElementById('search-business-group');
-                const set = new Set(tempBusinessGroupList.sort());
+                tempBusinessGroupList.push(companies[i].businessGroup);
+            }
 
-                for (let item of set) {
-                    var option = document.createElement('option');
-                    option.value = item;
-                    option.text = item;
+            // 산업군 필터링 컨트롤 Init
+            var businessGroupList = document.getElementById('search-business-group');
+            const set = new Set(tempBusinessGroupList.sort());
 
-                    businessGroupList.add(option, null);
-                }
-            });
+            for (let item of set) {
+                var option = document.createElement('option');
+                option.value = item;
+                option.text = item;
+
+                businessGroupList.add(option, null);
+            }
+        });
 
         // 선택한 회사의 주소를 좌표로 변환 후 지도에 그려주는 함수
         function drawCompanyOnMap() {
