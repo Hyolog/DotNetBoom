@@ -11,20 +11,23 @@
         }
 
         #companies-search {
-            width: 20%;
+            width: 16%;
             height: 100vh;
             float: left;
         }
 
         #search-name {
+            width: 90%;
             margin: 5px;
             padding: 5px;
             font-size: 14px;
+            border-radius: 10px;
         }
 
         #search-business-group {
             margin: 5px;
             padding: 5px;
+            border-radius: 10px;
         }
 
         #company-list {
@@ -56,7 +59,7 @@
         }
 
         #map {
-            width: 80%;
+            width: 84%;
             height: 100vh;
             float: right;
         }
@@ -64,8 +67,8 @@
 </head>
 
 <body>
-    <div id="companies-search" style="overflow: auto;">
-        <input id="search-name" onkeyup="filterCompanies()" />
+    <div id="companies-search" style="overflow-y: auto; overflow-x: hidden;">
+        <input id="search-name" placeholder="회사명 검색" onkeyup="filterCompanies()" />
 
         <select id="search-business-group" onmouseup="filterCompanies()">
             <option value="">산업군 선택</option>
