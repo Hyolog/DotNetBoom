@@ -137,9 +137,16 @@
                         var markers = [];
 
                         companies.forEach(function (company) {
-                            markers.push(new kakao.maps.Marker({
+                            var marker = new kakao.maps.Marker({
                                 position: new kakao.maps.LatLng(coords[company.location].y, coords[company.location].x)
-                            }));
+                            });
+
+                            kakao.maps.event.addListener(marker, 'click', function(){
+                                var link = company.recruitUrl;
+                                window.open(link);
+                            });
+
+                            markers.push(marker);
                         });
 
                         clusterer.addMarkers(markers);

@@ -5,119 +5,119 @@
       "location": "경기도 성남시 분당구 대왕판교로645번길 14 네오위즈판교타워 7층",
       "businessGroup": "게임",
       "type": "대기업 계열사",
-      "numberOfEmployees": 400
+      "recruitUrl": "https://xlgames.recruiter.co.kr/app/jobnotice/view?systemKindCode=MRS1&jobnoticeSn=25228"
     },
     {
       "name": "플레이오토",
       "location": "서울 구로구 디지털로26길 123, 14층",
       "businessGroup": "서비스업",
       "type": "중소기업",
-      "numberOfEmployees": null
+      "recruitUrl": "https://www.playauto.co.kr/com/recruit_apply.html?num=33"
     },
     {
       "name": "넥슨코리아",
       "location": "경기 성남시 분당구 판교로256번길 7",
       "businessGroup": "게임",
       "type": "대기업",
-      "numberOfEmployees": 2800
+      "recruitUrl": "http://company.nexon.com/404_error.aspx?aspxerrorpath=/Careers/Notice/View.aspx"
     },
     {
       "name": "넷마블",
       "location": "서울 구로구 디지털로26길 38",
       "businessGroup": "게임",
       "type": "대기업",
-      "numberOfEmployees": 11100
+      "recruitUrl": "https://company.netmarble.com/rem/www/notice.jsp?anno_id=1757858&annotype=all"
     },
     {
       "name": "위메프",
       "location": "서울 강남구 영동대로 502",
       "businessGroup": "이커머스",
       "type": "중견기업",
-      "numberOfEmployees": 1430
+      "recruitUrl": "https://www.wanted.co.kr/wd/22834"
     },
     {
       "name": "KT",
       "location": "경기 성남시 분당구 불정로 90",
       "businessGroup": "무선통신업",
       "type": "대기업",
-      "numberOfEmployees": 54900
+      "recruitUrl": "https://recruit.kt.com/apply/notifyView?seq=16388"
     },
     {
       "name": "스마일게이트알피지",
       "location": "경기 성남시 분당구 판교로 344, 6층",
       "businessGroup": "게임",
       "type": "중견기업",
-      "numberOfEmployees": 530
+      "recruitUrl": "http://www.gamejob.co.kr/List_GI/GIB_Read.asp?GI_No=171534"
     },
     {
       "name": "이스트소프트",
       "location": "서울 서초구 반포대로 3",
       "businessGroup": "응용 소프트웨어 개발",
       "type": "중소기업",
-      "numberOfEmployees": 560
+      "recruitUrl": "https://job.incruit.com/jobdb_list/searchjob.asp?ct=3&ty=1&cd=149&from=jobpostnone"
     },
     {
       "name": "롯데정보통신",
       "location": "서울 금천구 가산디지털2로 179",
       "businessGroup": "응용 소프트웨어 개발",
       "type": "대기업",
-      "numberOfEmployees": 2710
+      "recruitUrl": "https://job.lotte.co.kr/LotteRecruit/Recruit_Info/RecruitView.aspx?emptype=20000252&nowpage=1&keyword=&keyselect=&regtype="
     },
     {
       "name": "라인플러스",
       "location": "경기 성남시 분당구 황새울로360번길 42",
       "businessGroup": "인터넷 정보매개 서비스업",
       "type": "대기업",
-      "numberOfEmployees": 11630
+      "recruitUrl": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=32098808"
     },
     {
       "name": "위메이드",
       "location": "경기 성남시 분당구 대왕판교로644번길 49, 코리아벤처타운업무시설 비블럭",
       "businessGroup": "게임",
       "type": "중견기업",
-      "numberOfEmployees": 440
+      "recruitUrl": "https://www.jobkorea.co.kr/Search/?stext=%e3%88%9c%ec%9c%84%eb%a9%94%ec%9d%b4%eb%93%9c"
     },
     {
       "name": "인터파크",
       "location": "서울 강남구 삼성로 512",
       "businessGroup": "이커머스",
       "type": "중견기업",
-      "numberOfEmployees": 1200
+      "recruitUrl": "https://interpark.recruiter.co.kr/app/jobnotice/list"
     },
     {
       "name": "조이시티",
       "location": "경기 성남시 분당구 분당로 55",
       "businessGroup": "게임",
       "type": "중소기업",
-      "numberOfEmployees": 300
+      "recruitUrl": "https://corp.joycity.com/recruit/JobInfo.do"
     },
     {
       "name": "포블게이트",
       "location": "서울 서초구 서초대로 397, A동 2707호",
       "businessGroup": "응용 소프트웨어 개발",
       "type": "중소기업",
-      "numberOfEmployees": 40
+      "recruitUrl": "https://www.rocketpunch.com/companies/foblgate/jobs"
     },
     {
       "name": "엔미디어플랫폼",
       "location": "경기 성남시 분당구 판교로256번길 25, 지비2 비동 3층",
       "businessGroup": "대기업",
       "type": "응용 소프트웨어 개발",
-      "numberOfEmployees": 87
+      "recruitUrl": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=38456282&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
     },
     {
       "name": "쎄트렉아이",
       "location": "대전 유성구 유성대로1628번길 21",
       "businessGroup": "항공 우주선 제조업",
       "type": "중소기업",
-      "numberOfEmployees": 300
+      "recruitUrl": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=37644057"
     },
     {
       "name": "잼팟",
       "location": "서울 영등포구 문래로28길 25, 7층",
       "businessGroup": "게임",
       "type": "중소기업",
-      "numberOfEmployees": 160
+      "recruitUrl": "https://www.wanted.co.kr/wd/37232?referer_id=332797"
     }
   ]
 }
