@@ -102,16 +102,22 @@
         var zoomControl = new kakao.maps.ZoomControl();
         map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-        // 클러스터 추가
-        var clusterer = new kakao.maps.MarkerClusterer({
-            map: map,
-            averageCenter: true,
-            minLevel: 5
+        // 여기서 파라메터 companies.json 통째로
+        $.getJSON("companies.json", function (data) {
+            makeClusterer(data);
         });
 
-        // 회사 리스트 불러와 마커 생성 후 클러스터에 추가
-        var coords = {};
-        $.getJSON("companies.json", function (data) {
+        // data = companies
+        function makeClusterer(data) {
+            // 클러스터 추가
+            var clusterer = new kakao.maps.MarkerClusterer({
+                map: map,
+                averageCenter: true,
+                minLevel: 5
+            });
+
+            // 회사 리스트 불러와 마커 생성 후 클러스터에 추가
+            var coords = {};
             var geocoder = new kakao.maps.services.Geocoder();
             var companies = data.companies;
             var total = companies.length;
@@ -120,14 +126,14 @@
             companies.forEach(function (company) {
                 // 비동기 addressSearch 함수 내부에서 계산한 값 기록을 위해 아래와 같은 패턴 사용
                 // ref : https://devtalk.kakao.com/t/topic/57418
-                geocoder.addressSearch(company.location, function(data, status) {
+                geocoder.addressSearch(company.location, function (data, status) {
                     if (status === kakao.maps.services.Status.OK) {
                         coords[company.location] = data[0];
-                    } 
+                    }
 
                     counter++;
 
-                    if (total === counter){
+                    if (total === counter) {
                         var markers = [];
 
                         companies.forEach(function (company) {
@@ -140,7 +146,7 @@
                     }
                 });
             });
-        });
+        }
     </script>
 
     <script type="text/javascript"></script>
@@ -155,7 +161,7 @@
                 var companyInfoSection = document.createElement("section");
                 companyInfoSection.className = 'company-info';
                 companyInfoSection.tabIndex = "0";
-                companyInfoSection.addEventListener("mouseup", drawCompanyOnMap);
+                companyInfoSection.addEventListener("mouseup", moveToCompanyLocation);
 
                 var companyNameDiv = document.createElement("div");
                 companyNameDiv.className = 'company-name';
@@ -191,7 +197,7 @@
         });
 
         // 선택한 회사 위치로 맵 중심 이동
-        function drawCompanyOnMap() {
+        function moveToCompanyLocation() {
             var location = this.querySelector('.company-location').textContent;
 
             var geocoder = new kakao.maps.services.Geocoder();
