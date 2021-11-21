@@ -23,6 +23,16 @@
             display: none;
         }
 
+        #search {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            width: inherit;
+            background-color: white;
+        }
+
         #search-name {
             width: 90%;
             margin: 5px;
@@ -38,6 +48,7 @@
         }
 
         #company-list {
+            padding-top: 80px;
             border: medium;
             font-family: "Noto Sans KR", sans-serif;
         }
@@ -75,12 +86,13 @@
 
 <body>
     <div id="companies-search" style="overflow-y: scroll; overflow-x: hidden;">
-        <input id="search-name" placeholder="회사명 검색" onkeyup="filterCompanies()" />
-
-        <select id="search-business-group" onchange="filterCompanies()">
-            <option value="">산업군 선택</option>
-        </select>
-
+        <div id="search">
+            <input id="search-name" placeholder="회사명 검색" onkeyup="filterCompanies()" />
+        
+            <select id="search-business-group" onchange="filterCompanies()">
+                <option value="">산업군 선택</option>
+            </select>
+        </div>
         <div id="company-list"></div>
     </div>
 
