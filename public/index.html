@@ -14,6 +14,13 @@
             width: 16%;
             height: 100vh;
             float: left;
+            -ms-overflow-style: none; /* for Internet Explorer, Edge */
+            scrollbar-width: none; /* for Firefox */
+            overflow-y: scroll;
+        }
+
+        #companies-search::-webkit-scrollbar {
+            display: none;
         }
 
         #search-name {
@@ -67,7 +74,7 @@
 </head>
 
 <body>
-    <div id="companies-search" style="overflow-y: auto; overflow-x: hidden;">
+    <div id="companies-search" style="overflow-y: scroll; overflow-x: hidden;">
         <input id="search-name" placeholder="회사명 검색" onkeyup="filterCompanies()" />
 
         <select id="search-business-group" onmouseup="filterCompanies()">
