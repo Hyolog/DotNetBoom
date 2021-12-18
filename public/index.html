@@ -5,6 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <style>
+        .customoverlay 
+        {
+            position:relative;
+            bottom:15px;
+            border-radius:10px;
+            border: 1px solid #ccc;
+            border-bottom:2px solid #ddd;
+            float:left;
+        }
+        .customoverlay .title 
+        {
+            display:block;
+            border-radius:10px;
+            background:#fff;
+            padding:10px 15px;
+            font-weight: normal;
+        }        
+        .customoverlay .title:hover
+        {
+            font-weight: bold;
+        }
+        .customoverlay:after 
+        {
+            content:'';
+            position:absolute;
+            margin-left:-10px;
+            left:50%;
+            bottom:-12px;
+            width:22px;
+            height:12px;
+            background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+        }
+
         html,
         body {
             padding: 0;
@@ -254,8 +287,10 @@
 
                         companies.forEach(function (company) {
                             if (coords[company.location]) {
+                                var pos = new kakao.maps.LatLng(coords[company.location].y, coords[company.location].x);
+
                                 var marker = new kakao.maps.Marker({
-                                    position: new kakao.maps.LatLng(coords[company.location].y, coords[company.location].x)
+                                    position: pos
                                 });
 
                                 kakao.maps.event.addListener(marker, 'click', function(){
@@ -264,6 +299,28 @@
                                 });
 
                                 markers.push(marker);
+
+                                var content = `<div class="customoverlay">
+                                                    <span class="title">${company.name}</span>
+                                                </div>`;
+
+                                const overlay = new kakao.maps.CustomOverlay({
+                                    content,
+                                    map: this.map,
+                                    position: pos,
+                                    yAnchor: 2.1,
+                                });
+
+                                kakao.maps.event.addListener(this.map, 'zoom_changed', () => {
+                                    let level = this.map.getLevel();
+                                    if (level < 6) {
+                                    overlay.setMap(this.map);
+                                    } else {
+                                    overlay.setMap(null);
+                                    }
+                                });
+
+                                overlay.setMap(null);
                             }
                         });
 
