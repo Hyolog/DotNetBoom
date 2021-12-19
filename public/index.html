@@ -5,37 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <style>
-        .customoverlay 
-        {
-            position:relative;
-            bottom:15px;
-            border-radius:10px;
-            border: 1px solid #ccc;
-            border-bottom:2px solid #ddd;
-            float:left;
+        .customoverlay {
+            background-color: #eef3fd;
+            border: #536AFF solid 1px;
+            border-radius: 5px;
+            color: #536AFF;
+            font-size: 13px;
+            font-weight: 600;
+            height: auto;
+            letter-spacing: -0.25px;
+            margin-top: 6.8px;
+            padding: 5px 11px;
+            position: relative;
+            width: fit-content;
+            z-index: 100;
+            top:-24px;
         }
-        .customoverlay .title 
+        .customoverlay:hover
         {
-            display:block;
-            border-radius:10px;
-            background:#fff;
-            padding:10px 15px;
-            font-weight: normal;
-        }        
-        .customoverlay .title:hover
-        {
-            font-weight: bold;
+            background-color: #CBDBFC;
         }
-        .customoverlay:after 
+        .customoverlay:after {
+            border-color: #eef3fd transparent;
+            border-style: solid;
+            border-width: 8px 6.5px 0 6px;
+            content: '';
+            display: block;
+            position: absolute;
+            top: 27px;
+            z-index: 1;
+            left: 50%;
+            margin-left:-6px;
+        }
+        .customoverlay:hover:after        
         {
-            content:'';
-            position:absolute;
-            margin-left:-10px;
-            left:50%;
-            bottom:-12px;
-            width:22px;
-            height:12px;
-            background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+            border-color: #CBDBFC transparent;
+        }
+        .customoverlay:before {
+            border-color: #536AFF transparent;
+            border-style: solid;
+            border-width: 8px 6.5px 0 6px;
+            content: '';
+            display: block;
+            position: absolute;
+            top: 28.5px;
+            z-index: 0;            
+            left: 50%;
+            margin-left:-6px;
         }
 
         html,
@@ -301,9 +317,7 @@
 
                                 markers.push(marker);
 
-                                var content = `<div class="customoverlay">
-                                                    <span class="title">${company.name}</span>
-                                                </div>`;
+                                var content = `<div class="customoverlay">${company.name}</div>`;
 
                                 const overlay = new kakao.maps.CustomOverlay({
                                     content,
